@@ -1,0 +1,6 @@
+# Ignore contents of keylog.txt and deciphered.txt
+keylog.txt
+deciphered.txt
+
+# Exclude the .gitignore file itself
+!.gitignore
